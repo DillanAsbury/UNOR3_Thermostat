@@ -28,11 +28,6 @@ LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
 void setup()
 {
-  /*lcd.begin(cols, rows)
-    lcd: a variable of type LiquidCrystal
-    cols: the number of columns that the display has
-    rows: the number of rows that the display has 
-  */ 
   lcd.begin(16, 2);
   lcd.setCursor(0, 0);
   lcd.print("    WELCOME!    ");
@@ -54,8 +49,7 @@ void setup()
   digitalWrite(BLUE, LOW);
 }
 
-
-
+//function to turn RGB LED to Green
 void greenLight()
 {
   digitalWrite(RED, LOW);
@@ -63,6 +57,7 @@ void greenLight()
   digitalWrite(BLUE, LOW);
 }
 
+//function to turn RGB LED to Red
 void redLight()
 {
   digitalWrite(RED, HIGH);
@@ -70,6 +65,7 @@ void redLight()
   digitalWrite(BLUE, LOW);
 }
 
+//function to turn RGB LED to Blue
 void blueLight()
 {
   digitalWrite(RED, LOW);
@@ -77,8 +73,7 @@ void blueLight()
   digitalWrite(BLUE, HIGH);
 }
 
-
-
+//fades the color in and out to create a breathing effect
 void breatheColor(String color)
 {
   if(color == "RED")
@@ -123,6 +118,7 @@ void breatheColor(String color)
   }
 }
 
+//flashes the color on and off
 void flashColor(String color)
 {
   if(color == "RED")
@@ -169,6 +165,7 @@ void flashColor(String color)
   }
 }
 
+//called in loop() to determine what color the RGB LED should be
 void check_temp(float temp)
 {
   if(temp >= 72)
@@ -191,6 +188,7 @@ void check_temp(float temp)
   }  
 }
 
+//Cycles through all colors; used at startup to look cool
 void spectrum()
 {
     #define delayTime 10 // fading time between colors
@@ -250,25 +248,7 @@ void spectrum()
     }
 }
 
-
-
-float readVcc() 
-{ 
-  long result; 
-  // Read 1.1V reference against AVcc 
-  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1); 
-  delay(2); 
-  // Wait for Vref to settle 
-  ADCSRA |= _BV(ADSC); 
-  // Convert 
-  while (bit_is_set(ADCSRA,ADSC)); 
-  result = ADCL; 
-  result |= ADCH<<8;
-  result = 1126400L / result; 
-  // Back-calculate AVcc in mV 
-  return result; 
-}
-
+//Gets the temp and humidity from the sensor
 static bool measure_environment( float *temperature, float *humidity )
 {
   static unsigned long measurement_timestamp = millis( );
@@ -287,7 +267,7 @@ static bool measure_environment( float *temperature, float *humidity )
 }
 
 
-
+//main loop
 void loop()
 {
   float Ctemperature;
@@ -311,15 +291,5 @@ void loop()
     lcd.print(Ftemperature);
     lcd.setCursor(7, 1);
     lcd.print(humidity);
-    //Serial.println(readVcc() / 1000, 3);
-    //Serial.println( readVcc(), DEC );
-    
   }
- 
-  /*  replaced
-    float tempVolts = tempReading * 5.0 / 1024.0;
-    float tempC = (tempVolts - 0.5) * 10.0;
-    float tempF = tempC * 9.0 / 5.0 + 32.0;
-  */
-  
 }
